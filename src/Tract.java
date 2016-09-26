@@ -40,6 +40,7 @@ public class Tract {
   }
 
   public void computeAverageFA(String[] averageFA) {
+    try {
     double average = 0;
     for (int i = 1; i < averageFA.length; i++) { // start at 1 to throw away
                                                  // label
@@ -47,6 +48,11 @@ public class Tract {
     }
     average /= (averageFA.length - 1);
     _averageFAs.add(average);
+    }
+    catch (Exception e){
+      System.out.println(this.getName());
+      e.printStackTrace();
+    }
   }
 
   public String getName() {

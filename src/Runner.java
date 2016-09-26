@@ -7,10 +7,16 @@ import java.util.ArrayList;
 
 public class Runner {
 
+  public static final String STUDY = "Wisconsin";
+  //0.493 for Emory
+  // 0.85 for Wisconsin
+  public static final double STUDY_CONSTANT = 0.85;
+  
   public static void main(String[] args) {
+    
 
     // read and parse Betas
-    File csvDirectory = new File("Betas");
+    File csvDirectory = new File(STUDY + "/Betas");
     BufferedReader betaReader = null;
     BufferedReader rawReader = null;
     ArrayList<Tract> tracts = new ArrayList<Tract>();
@@ -25,13 +31,14 @@ public class Runner {
         betaReader.readLine(); // age
         tracts.get(index).setExpectedBetas(betaReader.readLine().split(","));
         // read from Raw Data
-        rawReader = new BufferedReader(new FileReader(new File("RawData/" + tracts.get(index).getName() + "_RawData_FA.csv")));
+        rawReader = new BufferedReader(new FileReader(new File(STUDY + "/RawData/" + tracts.get(index).getName() + "_RawData_FA.csv")));
         rawReader.readLine(); // throw away header line
         while (rawReader.ready()) { // uhhh maybe this works?
           tracts.get(index).computeAverageFA(rawReader.readLine().split(","));
         }
         index++;
       } catch (Exception e) {
+        tracts.get(index).getName();
         e.printStackTrace();
       }
     }
@@ -46,14 +53,14 @@ public class Runner {
     // write output
     for (Tract tract : tracts) {
       try {
-        FileWriter outputCSV = new FileWriter(new File("Output/" + tract.getName() + ".csv"));
+        FileWriter outputCSV = new FileWriter(new File(STUDY + "/Output/" + tract.getName() + ".csv"));
         // write header line
         outputCSV.write("ArcLength, Average, RelBeta4Exp, ExpCorreBetas, ExpBetas\n");
 
         // write line
         for (int i = 0; i < tract.getSize(); i++) {
-          outputCSV.write(tract.getArcLengths().get(i) + "," + tract.getAverageFAs().get(i) + "," + (tract.getExpectedBetas().get(i) * 0.493 * 4) / tract.getAverageFAs().get(i) + ","
-              + (tract.getExpectedBetas().get(i) * 0.493 * 4) + "," + tract.getExpectedBetas().get(i) + "\n");
+          outputCSV.write(tract.getArcLengths().get(i) + "," + tract.getAverageFAs().get(i) + "," + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT * 4) / tract.getAverageFAs().get(i) + ","
+              + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT * 4) + "," + tract.getExpectedBetas().get(i) + "\n");
         }
         outputCSV.flush();
         outputCSV.close();
