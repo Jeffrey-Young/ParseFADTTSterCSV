@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class Runner {
 
-  public static final String STUDY = "Wisconsin";
-  //0.493 for Emory
-  // 0.85 for Wisconsin
-  public static final double STUDY_CONSTANT = 0.85;
+  public static final String STUDY = "Emory";
+  // 5.26 for Emory
+  // 3.04 for Wisconsin
+  public static final double STUDY_CONSTANT = 5.26;
   
   public static void main(String[] args) {
     
@@ -25,13 +25,13 @@ public class Runner {
       try {
         betaReader = new BufferedReader(new FileReader(csv));
         tracts.add(new Tract(csv.getName()));
-        tracts.get(index).setArcLengths(betaReader.readLine().split(","));
+        tracts.get(index).setArcLengths(betaReader.readLine().split(",")); // arc length
         betaReader.readLine(); // intercept
         betaReader.readLine(); // sex
-        betaReader.readLine(); // age
+        // betaReader.readLine(); // age
         tracts.get(index).setExpectedBetas(betaReader.readLine().split(","));
         // read from Raw Data
-        rawReader = new BufferedReader(new FileReader(new File(STUDY + "/RawData/" + tracts.get(index).getName() + "_RawData_FA.csv")));
+        rawReader = new BufferedReader(new FileReader(new File(STUDY + "/RawData/fa_" + tracts.get(index).getName() + ".csv")));
         rawReader.readLine(); // throw away header line
         while (rawReader.ready()) { // uhhh maybe this works?
           tracts.get(index).computeAverageFA(rawReader.readLine().split(","));
