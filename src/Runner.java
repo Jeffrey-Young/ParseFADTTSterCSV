@@ -55,12 +55,12 @@ public class Runner {
       try {
         FileWriter outputCSV = new FileWriter(new File(STUDY + "/Output/" + tract.getName() + ".csv"));
         // write header line
-        outputCSV.write("ArcLength, Average, RelBeta4Exp, ExpCorreBetas, ExpBetas\n");
+        outputCSV.write("ArcLength, Average, RelBeta, ExpCorreBetas, ExpBetas\n");
 
         // write line
         for (int i = 0; i < tract.getSize(); i++) {
-          outputCSV.write(tract.getArcLengths().get(i) + "," + tract.getAverageFAs().get(i) + "," + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT * 4) / tract.getAverageFAs().get(i) + ","
-              + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT * 4) + "," + tract.getExpectedBetas().get(i) + "\n");
+          outputCSV.write(tract.getArcLengths().get(i) + "," + tract.getAverageFAs().get(i) + "," + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT) / tract.getAverageFAs().get(i) + ","
+              + (tract.getExpectedBetas().get(i) * STUDY_CONSTANT) + "," + tract.getExpectedBetas().get(i) + "\n");
         }
         outputCSV.flush();
         outputCSV.close();
