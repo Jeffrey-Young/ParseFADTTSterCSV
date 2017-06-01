@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class Runner {
 
-  public static final String STUDY = "Emory";
+  public static final String STUDY = "Wisconsin";
   // 5.26 for Emory
   // 3.04 for Wisconsin
-  public static final double STUDY_CONSTANT = 5.26;
+  public static final double STUDY_CONSTANT = 3.04;
   
   public static void main(String[] args) {
     
