@@ -4,8 +4,9 @@ public class Tract {
 
 	private String _name;
 	private ArrayList<Double> _arcLengths;
-	private ArrayList<Double> _expectedBetas;
+	private ArrayList<Double> _betas;
 	private ArrayList<Double> _averageFAs;
+	private ArrayList<ArrayList<Double>> _covariates;
 
 	public Tract(String name) {
 		String temp = "";
@@ -19,8 +20,9 @@ public class Tract {
 			temp = name.split("_")[i];
 			i++;
 		}
+		_covariates = new ArrayList<ArrayList<Double>>();
 		_arcLengths = new ArrayList<Double>();
-		_expectedBetas = new ArrayList<Double>();
+		_betas = new ArrayList<Double>();
 		_averageFAs = new ArrayList<Double>();
 	}
 
@@ -32,12 +34,21 @@ public class Tract {
 		}
 	}
 
-	public void setExpectedBetas(String[] expectedBetas) {
+	public void addCovariate(String[] covariate) {
+		ArrayList<Double> toAdd = new ArrayList<Double>();
+		for (int i = 1; i < covariate.length; i++) {
+			toAdd.add(Double.parseDouble(covariate[i]));
+		}
+		_covariates.add(toAdd);
+	}
+
+	public void setBetas(String[] expectedBetas) {
 		for (int i = 1; i < expectedBetas.length; i++) { // start at i = 1 to
 															// throw
 															// away label
-			_expectedBetas.add(Double.parseDouble(expectedBetas[i]));
+			_betas.add(Double.parseDouble(expectedBetas[i]));
 		}
+		_covariates.add(_betas);
 	}
 
 	public void computeAverageFA(String[] averageFA) {
@@ -47,7 +58,7 @@ public class Tract {
 			for (int i = 1; i < averageFA.length; i++) { // start at 1 to throw
 															// away
 															// label
-				if (averageFA[i].contains("nan")){ // skip nans
+				if (averageFA[i].contains("nan")) { // skip nans
 					size--;
 					continue;
 				}
@@ -59,6 +70,14 @@ public class Tract {
 			System.out.println(this.getName());
 			e.printStackTrace();
 		}
+	}
+	
+	public double getCovariateSum(int index) {
+		double sum = 0;
+		for (ArrayList<Double> covariate : _covariates) {
+			sum += covariate.get(index);
+		}
+		return sum;
 	}
 
 	public String getName() {
@@ -77,8 +96,8 @@ public class Tract {
 		return _averageFAs;
 	}
 
-	public ArrayList<Double> getExpectedBetas() {
-		return _expectedBetas;
+	public ArrayList<Double> getBetas() {
+		return _betas;
 	}
 
 }
